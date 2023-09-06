@@ -1,0 +1,15 @@
+[metadata]
+name="Relatório Conversas"
+customer="PF"
+
+[form]
+[form.Ano]
+default=""
+query="select distinct extract(YEAR from created_at) from public.users"
+deps=[]
+
+
+[form.Mes]
+default=""
+query="select distinct extract(MONTH from created_at) from public.users where extract(YEAR from created_at) =  $1"
+deps=["form.Ano"]
