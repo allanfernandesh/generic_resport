@@ -17,27 +17,23 @@ class ReportController {
         )
       );
 
-      const promises: { index: number; pos: number; promise: unknown }[] = [];
+      const promises: { index: number; promise: unknown }[] = [];
 
       config.button.forEach((btn) => {
         btn.deps.sort();
         btn.disabled = 'disabled';
       });
 
-      let i = 0;
       config.field.forEach(async (element, index) => {
         //Para manter sempre as dependencias em ordem alfabetica, não mexa!
         element.deps.sort();
 
-        if (!element.deps.length && !element.data?.length) {
+        if (!element.deps.length) {
           promises.push({
-            index: i,
-            pos: index,
+            index: index,
             promise: ReportRepository.executeQuery(element.query),
           });
-
-          i++;
-        } else if (element.deps.length) {
+        } else {
           element.disabled = 'disabled';
         }
       });
@@ -45,19 +41,12 @@ class ReportController {
       const data = await Promise.all(promises.map((item: any) => item.promise));
 
       promises.forEach((item) => {
-        const options: unknown[] = [];
-
-        data[item.index].forEach(
-          (obj: { [s: string]: unknown } | ArrayLike<unknown>) =>
-            Object.values(obj).forEach((value) => {
-              options.push({
-                label: value,
-                value: value,
-              });
-            })
+        config.field[item.index].data = data[item.index].map(
+          (item: object) => ({
+            label: Object.values(item)[0],
+            value: Object.values(item)[0],
+          })
         );
-
-        config.field[item.pos].data = options;
       });
 
       response.render('index', config);
@@ -77,33 +66,21 @@ class ReportController {
 
     const promises: { key: string; promise: unknown }[] = [];
 
-    const dataFilled: any[] = [];
-
     config.field.forEach(async (element) => {
-      if (
-        element.deps.sort().toString() === filled.sort().toString() &&
-        !element.data?.length
-      ) {
+      if (element.deps.sort().toString() === filled.sort().toString()) {
         promises.push({
           key: element.key,
           promise: ReportRepository.executeQuery(element.query, values),
-        });
-      } else if (element.data?.length && !filled.includes(element.key)) {
-        dataFilled.push({
-          key: element.key,
-          value: element.data,
         });
       }
     });
 
     const data = await Promise.all(promises.map((item: any) => item.promise));
 
-    const result = data
-      .map((item, index) => ({
-        key: promises[index].key,
-        value: item,
-      }))
-      .concat(dataFilled);
+    const result = data.map((item, index) => ({
+      key: promises[index].key,
+      value: item,
+    }));
 
     response.json(result);
   }

@@ -1,5 +1,4 @@
 
-
 async function getValue(key) {
 
   const select = document.getElementById(key);
@@ -23,7 +22,6 @@ async function getValue(key) {
       }
     })
   }
-
 
   if (!filled.includes(key)) {
     filled.push(key)
@@ -67,7 +65,6 @@ async function getValue(key) {
       });
 
       enabledButton();
-
 
     });
 }
