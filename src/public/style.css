@@ -1,4 +1,52 @@
 body {
-  background-color: blue;
-  color: white;
+  padding: 8px 16px;
 }
+
+h1 {
+  text-align: center;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+}
+
+#container div {
+  display: flex;
+  gap: 32px;
+}
+
+#container div section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#container div select {
+  padding: 4px 4px;
+  cursor: pointer;
+}
+
+#container .button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#container .button button {
+  background: #00F;
+  color: #fff;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#container button[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+
+

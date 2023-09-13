@@ -16,7 +16,11 @@
   "plugins": [
     "@typescript-eslint"
   ],
+  "ignorePatterns": [
+    "*.js"
+  ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
     "no-unsafe-optional-chaining": "off",
     "indent": [
       "error",

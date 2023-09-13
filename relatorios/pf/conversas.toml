@@ -2,14 +2,59 @@
 name="Relatório Conversas"
 customer="PF"
 
-[form]
-[form.Ano]
-default=""
-query="select distinct extract(YEAR from created_at) from public.users"
+[[field]]
+key="ano"
+name="Ano"
+query="select distinct extract(YEAR from created_at)  as year from \"0239d9b4-cc8c-4b33-866e-ac9b9a2a7a86\".chatbot_conversation_messages"
 deps=[]
 
+[[field.data]]
+label = "2023"
+value = "2023"
 
-[form.Mes]
-default=""
-query="select distinct extract(MONTH from created_at) from public.users where extract(YEAR from created_at) =  $1"
-deps=["form.Ano"]
+[[field.data]]
+label = "2022"
+value = "2022"
+
+[[field]]
+key="mes"
+name="Mês"
+query="select distinct extract(MONTH from created_at)  as month from \"0239d9b4-cc8c-4b33-866e-ac9b9a2a7a86\".chatbot_conversation_messages where extract(YEAR from created_at) =  $1"
+deps=["ano"]
+
+#Caso queira preencher os dados do campo acima sem precisar fazer a query, basta colocar abaixo do field as opções desejadas
+[[field.data]]
+label = "Janeiro"
+value = "1"
+
+[[field]]
+key="dia"
+name="Dia"
+query="select distinct extract(DAY from created_at)  as year from \"0239d9b4-cc8c-4b33-866e-ac9b9a2a7a86\".chatbot_conversation_messages where extract(YEAR from created_at) =  $1 AND extract(MONTH from created_at) =  $2"
+deps=["mes","ano" ]
+
+
+[[field]]
+key="canal_acesso"
+name="Canal de Acesso"
+deps=[]
+
+[[field.data]]
+label = "TELEGRAM"
+value = "TELEGRAM"
+
+[[field.data]]
+label = "WHATSAPP"
+value = "WHATSAPP"
+
+[[field.data]]
+label = "WEBCHAT"
+value = "WEBCHAT"
+
+
+[[button]]
+key="csv"
+name="Baixar Relatorio"
+query="select distinct extract(YEAR from created_at)  as year from \"0239d9b4-cc8c-4b33-866e-ac9b9a2a7a86\".chatbot_conversation_messages where extract(YEAR from created_at) =  $1 AND extract(MONTH from created_at) =  $2"
+deps=["ano", "mes", "dia", "canal_acesso"]
+

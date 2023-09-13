@@ -1,0 +1,30 @@
+<h1>{{metadata.name}}</h1>
+
+
+<div id="container">
+  <div id="fields">
+    {{#each field}}
+      <section>
+        <label for={{key}}>{{name}}</label>
+        <select id={{key}} {{disabled}} onchange='getValue("{{key}}")' data-deps='{{deps}}' data-key='{{key}}'>
+          {{#if data.length}}
+            <option value="">Selecione</option>
+            {{#each data}}
+              <option value={{value}}>{{label}}</option>
+            {{/each}}
+          {{else}}
+            <option value=''>Selecione...</option>
+          {{/if}}
+        </select>
+      </section>
+
+    {{/each}}
+  </div>
+
+  {{#each button}}
+    <div class="button">
+      <button data-deps='{{deps}}' onchange='getValue("{{key}}")' {{disabled}} id={{key}}>{{name}}</button>
+    </div>
+  {{/each}}
+</div>
+

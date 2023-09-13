@@ -1,24 +1,8 @@
-import { Request, Response, Router } from 'express';
-import toml from 'toml';
-import path from 'path';
-import fs from 'fs';
+import { Router } from 'express';
+import ReportController from './app/controllers/ReportController';
 
 export const router = Router();
 
-router.get('/:customer/:file', async (req: Request, resp: Response) => {
-  try {
-    const { customer, file } = req.params;
+router.get('/:customer/:file', ReportController.getConfig);
 
-    const config = toml.parse(
-      fs.readFileSync(path.join(`relatorios/${customer}/${file}.toml`), 'utf-8')
-    );
-
-    console.log(JSON.stringify(config, null, 2));
-
-    resp.render('index');
-    //resp.sendFile(path.join(__dirname + '/views/index.html'));
-  } catch (error) {
-    console.log(error);
-    resp.send('deu ruim');
-  }
-});
+router.post('/:customer/:file', ReportController.sendData);
